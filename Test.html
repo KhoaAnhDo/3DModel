@@ -1,0 +1,744 @@
+                       <html>
+  <head>
+     <script src="https://unpkg.com/aframe-animation-mixer@2.0.1/dist/aframe-animation-mixer.min.js"></script>
+     <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.2.0/dist/aframe-extras.min.js"></script>
+     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+     <script>
+      // Global Variables
+      tvOn = false;
+      fnOn = false
+      </script>
+  </head>
+  
+  <body>
+    <a-sound>
+      <audio id="pianoSound" src="./sound/toteti.mp3"></audio>
+      <audio id="recordSound" src="./sound/piano.mp3"></audio>
+    </a-sound>
+    <a-scene>
+      <!-- JavaScript -->
+      <script type="text/javascript">
+				
+				function tvClick()
+				{
+					var tv = document.querySelector("#tvScreen");
+					var text = document.querySelector("#tvText");
+
+					if(!tvOn)
+					{
+						text.setAttribute('visible', 'false');
+						tv.setAttribute('material', 'color', 'white');
+						tvOn = true;
+					}
+					else
+					{
+						tv.setAttribute('material', 'color', 'black');
+						tvOn = false;
+					}
+				}
+
+        function fnClick()
+				{
+					var fn = document.querySelector("#fnScreen");
+					var text = document.querySelector("#fnText");
+
+					if(!fnOn)
+					{
+						text.setAttribute('visible', 'false');
+						fn.setAttribute('material', 'color', 'white');
+						fnOn = true;
+					}
+					else
+					{
+						fn.setAttribute('material', 'color', 'black');
+						fnOn = false;
+					}
+				}
+
+        function playPiano()
+				{
+					var text = document.querySelector("#pianoText");
+					text.setAttribute('visible', 'false');
+					var audio = document.querySelector("#pianoSound");
+					audio.play();
+				}
+
+        function playRecord()
+				{
+					var text = document.querySelector("#recordText");
+					text.setAttribute('visible', 'false');
+					var audio = document.querySelector("#recordSound");
+					audio.play();
+				}
+
+        function setLight() {
+          var light = document.querySelector('#main-light');
+          var current_intensity = parseFloat(light.getAttribute('intensity'));
+          var target_intensity; 
+          // Define the target intensity based on the current intensity
+          if (current_intensity === 1) target_intensity = 0.5;
+         // else if (current_intensity === 0.5) target_intensity = 0;
+          else if (current_intensity === 0) target_intensity = 2;
+          else target_intensity = 1;  
+         // Calculate the step size for smooth transition
+          var step = (target_intensity - current_intensity) / 20; // You can adjust the duration
+          // Use requestAnimationFrame for smoother animation
+          function animate() {
+            if ((current_intensity < target_intensity && step > 0) || (current_intensity > target_intensity && step < 0)) {
+              current_intensity += step;
+              light.setAttribute('intensity', current_intensity.toFixed(1));
+              requestAnimationFrame(animate);
+            } else {
+              light.setAttribute('intensity', target_intensity.toFixed(1));
+            }
+          } 
+          animate();
+        }
+      </script>
+
+        <!---Player Camera--->
+        <a-camera id="cam" position="-43.52433 4.5 80.28671" camera="" rotation="-2.864788975654117 -48.930595704172326 0" look-controls="" wasd-controls="" data-aframe-inspector-original-camera=""> <a-cursor material="" raycaster="" cursor="" geometry=""></a-cursor>
+        </a-camera>
+
+        <!-- light -->
+        <a-light type="directional" awcolor="white" position="-0.5 1 1" angle="90" decay="1" intensity="1"></a-light>
+        <a-light id="main-light" type="ambient" color="grey" position="0 0 0" angle="90" decay="1" intensity="0.5"></a-light>
+
+        <!--light button-->
+        <a-box onclick="setLight()" position="-23.32996 4.12345 34.24368" rotation="0 0 90" scale="0.51026 0.34061 0.12635" color="#4CC3D9" event-set__enter="_event: mouseenter; color: #8FF7FF" event-set__leave="_event: mouseleave; color: #4CC3D9" material="" geometry=""></a-box>
+
+        <!-- Buttons for moving up/down stairs -->
+        <a-box id="up" src="./image/up.jpg" geometry="width: 0.28; height: 0.6; depth: 0.6" position="5.67134 4.62336 28.322" class="intersectable" material="" rotation="0 88.627 0"></a-box>
+        <a-box id="down" src="./image/down.jpg" geometry="depth: 0.6; height: 0.6; width: 0.28" position="5.79316 18.18942 28.32215" class="intersectable" material="" rotation="0 -90.2935648502567 0" scale="0.75675 0.75651 0.50303"></a-box>
+        <script>
+        var cam = document.querySelector('#cam');
+        var ch1 = document.querySelector('#up');
+        var ch2 = document.querySelector('#down'); 
+
+        ch1.addEventListener('click', function () {
+         cam.setAttribute('position' , {x: 9.365, y: 18.228, z: 29.519});
+         cam.setAttribute('rotation' , {x: 0, y: 0, z: 0});
+        });
+        ch2.addEventListener('click', function () {
+         cam.setAttribute('position' , {x: 9.005, y: 4.316, z: 27.948});
+         cam.setAttribute('rotation' , {x: 0, y: 0, z: 0});
+        });
+        </script>
+
+
+        <!-- Ceiling -->
+        <a-entity static-body="" geometry="depth: 13; height: 0.2; width: 51" position="4.63888 13.53922 -19.67669" material="shader: flat; side: double; src: image/floor.jpg; repeat: 10 10" scale="1 1 0.822" rotation=""></a-entity>
+        <a-entity static-body="" geometry="depth: 60; height: 0.2; width: 60" position="0 13.641 10.34172" material="shader: flat; side: double; src: image/floor.jpg; repeat: 20 20" scale="1 1 0.82237"></a-entity>
+        <a-entity static-body="" geometry="depth: 22.5; height: 0.2; width: 25.5" position="17.64625 13.641 44.05616" material="shader: flat; side: double; src: image/floor.jpg; repeat: 10 10" scale="1 1 0.82237"></a-entity>
+        <a-entity static-body="" geometry="depth: 74; height: 0.2; width: 36.5" position="12.28536 27.64928 5.13393" material="shader: flat; side: double; src: image/floor.jpg; repeat: 20 20" scale="1 1 0.82237"></a-entity>
+
+
+        <!-- Floor -->
+        <a-entity static-body="" geometry="depth: 12; height: 0.2; width: 50" position="4.4317 -0.406 -19.27174" material="shader: flat; side: double; src: image/floor.jpg; repeat: 10 10" scale="1 1 0.822" rotation=""></a-entity>
+        <a-entity static-body="" geometry="depth: 60; height: 0.2; width: 60" position="0 -0.406 10.34172" material="shader: flat; side: double; src: image/floor.jpg; repeat: 20 20" scale="1 1 0.82237"></a-entity>
+        <a-entity static-body="" geometry="depth: 23; height: 0.2; width: 25.5" position="17.646 -0.43254 43.866" material="shader: flat; side: double; src: image/floor.jpg; repeat: 10 10" scale="1 1 0.822"></a-entity>
+   
+
+        <!-- Floor 1 Walls  -->
+        <a-entity static-body="" geometry="height: 14; width: 60" position="29.97846 6.5 5.03558" rotation="0 90 0" material="roughness: 1;side: double;  src: image/wall.jpg"></a-entity>
+        <a-entity static-body="" geometry="height: 14; width: 33.3" position="7.23386 6.5 34.75" rotation="" material="roughness: 1; side: double; src: image/wall.jpg"></a-entity>
+        <a-entity static-body="" geometry="height: 14; width: 50" position="-29.81361 6.5 9.909" rotation="0 90 0" material="roughness: 1;side: double;  src: image/wall.jpg"></a-entity>
+        <a-entity static-body="" geometry="height: 14; width: 10" position="-25.28715 6.5 34.824" rotation="" material="roughness: 1;side: double;  src: image/wall.jpg"></a-entity>
+        <a-entity static-body="" geometry="height: 14; width: 51" position="4.62546 6.5 -24.713" rotation="" material="roughness: 1;side: double;  src: image/wall.jpg" scale=""></a-entity>
+        <a-entity static-body="" geometry="height: 14; width: 10" position="-25.19957 6.5 -14.602" rotation="" material="roughness: 1;side: double;  src: image/wall.jpg"></a-entity>
+        <a-entity static-body="" geometry="height: 14; width: 25" position="17.257 6.5 7.29365" rotation="" material="roughness: 1;side: double;  src: image/wall.jpg" scale=""></a-entity>
+        <a-entity static-body="" geometry="height: 14; width: 25.5" position="5.40959 6.5 -11.83133" rotation="0 90 0" material="roughness: 1; side: double; src: image/wall.jpg"></a-entity>        
+        <a-entity static-body="" geometry="height: 14; width: 20" position="5.40959 6.5 24.80365" rotation="0 90 0" material="roughness: 1;side: double;  src: image/wall.jpg"></a-entity>
+        <a-entity static-body="" geometry="height: 14; width: 25" position="-16.82443 6.5 7.294" rotation="" material="roughness: 1;side: double;  src: image/wall.jpg" scale=""></a-entity>
+        <a-entity static-body="" geometry="height: 14; width: 18.5" position="29.96627 6.5 44.13111" rotation="0 90 0" material="roughness: 1; side: double; src: image/wall.jpg"></a-entity>
+        <a-entity static-body="" geometry="height: 14; width: 25" position="17.25798 6.5 52.86978" rotation="" material="roughness: 1;side: double;  src: image/wall.jpg"></a-entity>
+        <a-entity static-body="" geometry="height: 14; width: 10" position="-12.51732 6.5 -19.11845" rotation="0 90 0" material="roughness: 1;side: double;  src: image/wall.jpg"></a-entity>
+        <a-entity static-body="" geometry="height: 14; width: 12" position="-7.08882 6.5 -14.59489" rotation="" material="roughness: 1;side: double;  src: image/wall.jpg" scale=""></a-entity>
+        <a-entity static-body="" geometry="height: 14; width: 15" position="22.00777 6.5 15.31213" rotation="" material="roughness: 1; side: double; src: image/wall.jpg" scale=""></a-entity>
+        <a-entity static-body="" geometry="height: 4; width: 7" position="14.99931 11.52435 11.30107" rotation="0 90 0" material="roughness: 1; src: image/wall1.jpg; opacity: 0.75"></a-entity>
+        <a-entity static-body="" geometry="height: 14; width: 4.8" position="-20.32655 6.5 -16.47574" rotation="0 90 0" material="roughness: 1; side: double; src: image/wall.jpg"></a-entity>
+
+        
+
+        <a-entity static-body="" geometry="height: 4; width: 6" position="5.41 11.52435 3.92536" rotation="0 90 0" material="roughness: 1; src: image/wall1.jpg; opacity: 0.75"></a-entity>        
+        <a-entity static-body="" geometry="height: 4; width: 7" position="5.41 11.52435 11.30107" rotation="0 90 0" material="roughness: 1; src: image/wall1.jpg; opacity: 0.75"></a-entity>
+        <a-entity static-body="" geometry="height: 4; width: 9.1" position="0.21253 11.524 7.27463" rotation="" material="roughness: 1; src: image/wall1.jpg; opacity: 0.75"></a-entity>
+        <a-entity static-body="" geometry="height: 3.95; width: 5.29; depth: 0.7" position="-20.51114 11.45372 -21.55923" rotation="0 -90 0" material="roughness: 1; src: image/wall1.jpg; opacity: 0.75"></a-entity>
+        <a-entity static-body="" geometry="height: 4.1; width: 11" position="-14.89106 11.46221 34.77691" rotation="" material="roughness: 1; src: image/wall1.jpg; opacity: 0.75"></a-entity>
+        <a-entity static-body="" geometry="height: 4; width: 17.5; depth: 0.5" position="5.05528 11.53264 43.84422" rotation="0 -90 0" material="roughness: 1; src: image/wall1.jpg; opacity: 0.75"></a-entity>
+        <a-entity static-body="" geometry="height: 4; width: 6" position="1.90282 11.524 -14.59867" rotation="" material="roughness: 1; src: image/wall1.jpg; opacity: 0.75"></a-entity>
+        <a-entity static-body="" geometry="height: 4; width: 6" position="26.87996 11.524 34.77691" rotation="" material="roughness: 1; src: image/wall1.jpg; opacity: 0.75"></a-entity>
+
+        <!--Floor 2's Walls-->
+        <a-entity static-body="" geometry="height: 14; width: 20" position="-5.09552 20.59836 25.16636" rotation="0 90 0" material="roughness: 1;side: double;  src: image/wall.jpg"></a-entity>
+        <a-entity static-body="" geometry="height: 14; width: 30" position="-5.09552 20.59836 -10.12356" rotation="0 90 0" material="roughness: 1;side: double;  src: image/wall.jpg"></a-entity>
+        <a-entity static-body="" geometry="height: 14; width: 35" position="11.94315 20.5703 -24.713" rotation="" material="roughness: 1;side: double;  src: image/wall.jpg" scale=""></a-entity>
+        <a-entity static-body="" geometry="height: 14; width: 60.5" position="29.97846 20.59836 5.00081" rotation="0 90 0" material="roughness: 1; side: double; src: image/wall.jpg"></a-entity>
+        <a-entity static-body="" geometry="height: 14; width: 19.4" position="3.95128 20.54127 34.74995" rotation="" material="roughness: 1;side: double;  src: image/wall.jpg"></a-entity>
+        <a-entity static-body="" geometry="height: 14; width: 12" position="0.35327 20.63066 4.34827" rotation="" material="roughness: 1;side: double;  src: image/wall.jpg" scale=""></a-entity>
+        <a-entity static-body="" geometry="height: 14; width: 13" position="23.00137 20.63066 4.34827" rotation="" material="roughness: 1;side: double;  src: image/wall.jpg" scale=""></a-entity>
+
+        <a-entity static-body="" geometry="height: 4; width: 10.5" position="-5.10207 25.60575 9.95054" rotation="0 -90 0" material="roughness: 1; src: image/wall1.jpg; opacity: 0.75"></a-entity>
+        <a-entity static-body="" geometry="height: 4; width: 10.1; depth: 0.5" position="11.42782 25.60575 4.65125" rotation="" material="roughness: 1; src: image/wall1.jpg; opacity: 0.75"></a-entity>
+        <a-entity static-body="" geometry="height: 4; width: 15.9" position="21.59582 25.4778 34.77691" rotation="" material="roughness: 1; src: image/wall1.jpg; opacity: 0.75"></a-entity>
+
+        <a-entity static-body="" geometry="depth: 0.25; height: 4; width: 31.7" position="-30.09098 15.58847 19.09939" rotation="0 90 0" material="roughness: 1; src: ./image/glass.jpg; opacity: 0.5"></a-entity>
+        <a-entity static-body="" geometry="depth: 0.25; height: 4; width: 24.7" position="-17.88519 15.58847 35.03474" rotation="" material="roughness: 1; src: ./image/glass.jpg; opacity: 0.5"></a-entity>
+        <a-entity static-body="" geometry="depth: 0.25; height: 4; width: 18.5" position="4.76651 15.58847 44.13641" rotation="0 90 0" material="roughness: 1; src: ./image/glass.jpg; opacity: 0.5"></a-entity>
+        <a-entity static-body="" geometry="depth: 0.25; height: 4; width: 25.5" position="17.63966 15.58847 53.33383" rotation="" material="roughness: 1; src: ./image/glass.jpg; opacity: 0.5"></a-entity>
+        <a-entity static-body="" geometry="depth: 0.25; height: 4; width: 18.6" position="30.49711 15.58847 43.94899" rotation="0 90 0" material="roughness: 1; src: ./image/glass.jpg; opacity: 0.5"></a-entity>
+        
+        <!-- Floor 2's door -->
+        <a-entity static-body="" geometry="height: 10; width: 5; depth: 0.5" position="-5.06264 18.64813 12.69252" rotation="0 90 0" material="roughness: 1; side: double; src: image/balconydoor.jpg" scale=""></a-entity>
+        <a-entity static-body="" geometry="height: 10; width: 4; depth: 0.5" position="15.68182 18.42611 34.79026" rotation="" material="roughness: 1; side: double; src: image/balconydoor.jpg" scale=""></a-entity>
+        <a-entity static-body="" geometry="height: 10; width: 4; depth: 0.5" position="27.51573 18.42611 34.79026" rotation="" material="roughness: 1; side: double; src: image/balconydoor.jpg" scale=""></a-entity>
+
+        <a-box id="myBox4" src="./image/balconydoor.jpg" animation__move="property: position; to: -5.063 18.648 7.551; easing: easeInOutQuad; dur: 3000" move-box4 material geometry="height: 10; width: 5.5; depth: 0.2" scale="1 1 1" rotation="0 90 0"></a-box>
+        <script>
+          var boxEl4 = document.getElementById('myBox4');
+        
+          boxEl4.addEventListener('click', function () {
+            boxEl4.emit('moveBox4'); // Use the correct event name moveBox
+          });
+        
+          // Toggle the state
+          var isBoxMoved4 = false;
+        
+          AFRAME.registerComponent('move-box4', {
+            init: function () {
+              var el4 = this.el;
+        
+              el4.addEventListener('moveBox4', function () {
+                if (isBoxMoved4) {
+                  el4.setAttribute('animation__move', 'to: -5.063 18.648 7.551');
+                } else {
+                  el4.setAttribute('animation__move', 'to: -5.063 18.648 11.723');
+                }
+                isBoxMoved4 = !isBoxMoved4;
+              });
+            },
+          });
+          boxEl4.setAttribute('move-box4', '');
+        </script>
+
+<a-box id="myBox5" src="./image/balconydoor.jpg" animation__move="property: position; to: 19.176 18.426 34.790; easing: easeInOutQuad; dur: 3000" move-box5 material geometry="height: 10; width: 4.5; depth: 0.2" scale="1 1 1" rotation="0 0 0"></a-box>
+<script>
+  var boxEl5 = document.getElementById('myBox5');
+
+  boxEl5.addEventListener('click', function () {
+    boxEl5.emit('moveBox5'); // Use the correct event name moveBox
+  });
+
+  // Toggle the state
+  var isBoxMoved5 = false;
+
+  AFRAME.registerComponent('move-box5', {
+    init: function () {
+      var el5 = this.el;
+
+      el5.addEventListener('moveBox5', function () {
+        if (isBoxMoved5) {
+          el5.setAttribute('animation__move', 'to: 19.176 18.426 34.790');
+        } else {
+          el5.setAttribute('animation__move', 'to: 16.204 18.426 34.790');
+        }
+        isBoxMoved5 = !isBoxMoved5;
+      });
+    },
+  });
+  boxEl5.setAttribute('move-box5', '');
+</script>
+
+<a-box id="myBox6" src="./image/balconydoor.jpg" animation__move="property: position; to: 23.744 18.426 34.790; easing: easeInOutQuad; dur: 3000" move-box6 material geometry="height: 10; width: 4.5; depth: 0.2" scale="1 1 1" rotation="0 0 0"></a-box>
+<script>
+  var boxEl6 = document.getElementById('myBox6');
+
+  boxEl6.addEventListener('click', function () {
+    boxEl6.emit('moveBox6'); // Use the correct event name moveBox
+  });
+
+  // Toggle the state
+  var isBoxMoved6 = false;
+
+  AFRAME.registerComponent('move-box6', {
+    init: function () {
+      var el6 = this.el;
+
+      el6.addEventListener('moveBox6', function () {
+        if (isBoxMoved6) {
+          el6.setAttribute('animation__move', 'to: 23.744 18.426 34.790');
+        } else {
+          el6.setAttribute('animation__move', 'to: 27.042 18.426 34.790');
+        }
+        isBoxMoved6 = !isBoxMoved6;
+      });
+    },
+  });
+  boxEl6.setAttribute('move-box6', '');
+</script>
+
+
+        <!--Elevator-->
+        <a-entity static-body="" geometry="height: 14; width: 8" position="13.15159 6.5 30.38024" rotation="0 90 0" material="roughness: 1;side: double;  src: image/wall.jpg"></a-entity>
+        <a-entity static-body="" geometry="height: 4; width: 6.8" position="9.32764 11.524 26.90025" rotation="" material="roughness: 1;side: double;  src: image/wall1.jpg; opacity: 0.5"></a-entity>
+        <a-entity static-body="" geometry="height: 10; width: 3.5; depth: 0.3" position="11.18369 4.50897 26.56797" rotation="" material="roughness: 1; side: double; src: image/metal.jpg" scale=""></a-entity>
+
+        <a-entity static-body="" geometry="height: 14; width: 8" position="13.152 20.67912 30.38" rotation="0 90 0" material="roughness: 1;side: double;  src: image/wall.jpg"></a-entity>
+        <a-entity static-body="" geometry="height: 14; width: 8" position="5.40959 20.54456 30.28124" rotation="0 90 0" material="roughness: 1;side: double;  src: image/wall.jpg"></a-entity>
+        <a-entity static-body="" geometry="height: 4; width: 6.8" position="9.32764 25.63548 26.88926" rotation="" material="roughness: 1;side: double;  src: image/wall1.jpg; opacity: 0.5"></a-entity>
+        <a-entity static-body="" geometry="height: 10; width: 3.5; depth: 0.3" position="11.18369 18.64244 26.56797" rotation="" material="roughness: 1; side: double; src: image/metal.jpg" scale=""></a-entity>
+        
+
+        <!-- Lift Door-->
+        <a-box id="myBox" src="./image/metal.jpg" animation__move="property: position; to: 7.667 4.497 26.596; easing: easeInOutQuad; dur: 3000" move-box material geometry="height: 2; width: 1; depth: 1" scale="0.22711 5.00402 3.50475" rotation="0 90 0"></a-box>
+        <script>
+          var boxEl = document.getElementById('myBox');
+        
+          boxEl.addEventListener('click', function () {
+            boxEl.emit('moveBox'); // Use the correct event name moveBox
+          });
+        
+          // Toggle the state
+          var isBoxMoved = false;
+        
+          AFRAME.registerComponent('move-box', {
+            init: function () {
+              var el = this.el;
+        
+              el.addEventListener('moveBox', function () {
+                if (isBoxMoved) {
+                  el.setAttribute('animation__move', 'to: 7.667 4.497 26.596');
+                } else {
+                  el.setAttribute('animation__move', 'to: 10.926 4.497 26.596');
+                }
+                isBoxMoved = !isBoxMoved;
+              });
+            },
+          });
+          boxEl.setAttribute('move-box', '');
+        </script>
+        
+        <!-- Lift door floor 2 -->
+        <a-box id="myBox1" src="./image/metal.jpg" animation__move="property: position; to: 7.706 18.616 26.596; easing: easeInOutQuad; dur: 3000" move-box1 material geometry="height: 2" scale="0.22711 5.00402 3.50475" rotation="0 90 0"></a-box>
+        <script>
+          var boxEl1 = document.getElementById('myBox1');
+        
+          boxEl1.addEventListener('click', function () {
+            boxEl1.emit('moveBox1'); // Use the correct event name moveBox1
+          });
+        
+          // Toggle the state
+          var isBoxMoved1 = false;
+        
+          AFRAME.registerComponent('move-box1', {
+            init: function () {
+              var el1 = this.el;
+        
+              el1.addEventListener('moveBox1', function () {
+                if (isBoxMoved1) {
+                  el1.setAttribute('animation__move', 'to: 7.706 18.616 26.596');
+                } else {
+                  el1.setAttribute('animation__move', 'to: 10.803 18.616 26.596');
+                }
+                isBoxMoved1 = !isBoxMoved1;
+              });
+            },
+          });
+          boxEl1.setAttribute('move-box1', '');
+        </script>
+
+        
+        <!--sky-->
+        <a-sky src=./image/sky.jpg></a-sky>
+
+
+        <!--grass-->
+        <a-entity static-body="" geometry="depth: 200; height: 0.1; width: 200" position="-21.6948 -0.5 -13" material="shader: flat; side: double; src: image/grass.jpg; repeat: 80 80"></a-entity>
+
+
+        <!-- fences-->
+        <a-entity static-body="" geometry="depth: 0.25; height: 7; width: 40" position="18.78668 2.99826 63.49638" rotation="0 180 0" material="roughness: 1; src: ./image/fence.jpg; repeat: 8 2"></a-entity>
+        <a-entity static-body="" geometry="depth: 0.25; height: 7; width: 120" position="38.6969 3.00261 3.51944" rotation="0 90 0" material="roughness: 1; src: ./image/fence.jpg; repeat: 20 2"></a-entity>
+        <a-entity static-body="" geometry="depth: 0.25; height: 7; width: 80" position="-1.123 3.05331 -56.33277" rotation="0 180 0" material="roughness: 1; src: ./image/fence.jpg; repeat: 20 2"></a-entity>
+        <a-entity static-body="" geometry="depth: 0.25; height: 7; width: 60" position="-71.92422 3.08449 -56.18996" rotation="" material="roughness: 1; src: ./image/fence.jpg; repeat: 20 2"></a-entity>
+        <a-entity static-body="" geometry="depth: 0.25; height: 7; width: 60" position="-72.17606 3.104 34.12154" rotation="" material="roughness: 1; src: ./image/fence.jpg; repeat: 20 2"></a-entity>
+        <a-entity static-body="" geometry="depth: 0.25; height: 7; width: 32" position="-32.52478 3.104 49.0429" rotation="0 120.15669809027032 0" material="roughness: 1; src: ./image/fence.jpg; repeat: 20 2"></a-entity>
+        <a-entity static-body="" geometry="depth: 0.25; height: 7; width: 90" position="-103.17845 3.00261 -10.46401" rotation="0 90 0" material="roughness: 1; src: ./image/fence.jpg; repeat: 20 2"></a-entity>
+
+        <!-- Gate -->
+        <a-cylinder position="-1.76236 4.38828 62.63316" radius="1.4" height="10" material="src: ./image/gold.jpg" geometry=""></a-cylinder>
+        <a-cylinder position="-24.12055 4.60262 62.66961" radius="1.4" height="10" material="src: ./image/gold.jpg" geometry=""></a-cylinder>
+
+        <a-sphere position="-1.87553 10.812 62.86436" radius="2" color="" material="color: #FFF; src: ./image/gold.jpg" geometry=""></a-sphere>
+        <a-sphere position="-24.06492 10.8571 62.55161" radius="2" color="" material="color: #FFF; src: ./image/gold.jpg" geometry=""></a-sphere>
+
+        <a-box id="myBox3" src="./image/metal.jpg" animation__move="property: position; to: -12.902 3.157 63.158; easing: easeInOutQuad; dur: 3000" move-box3 material geometry="depth: 3.5; height: 1.5; width: 2" scale="0.227 5.004 6.024" rotation="0 90 0"></a-box>
+        <script>
+          var boxEl3 = document.getElementById('myBox3');
+        
+          boxEl3.addEventListener('click', function () {
+            boxEl3.emit('moveBox3'); // Use the correct event name moveBox1
+          });
+        
+          // Toggle the state
+          var isBoxMoved3 = false;
+        
+          AFRAME.registerComponent('move-box3', {
+            init: function () {
+              var el3 = this.el;
+        
+              el3.addEventListener('moveBox3', function () {
+                if (isBoxMoved3) {
+                  el3.setAttribute('animation__move', 'to: -12.902 3.157 63.158');
+                } else {
+                  el3.setAttribute('animation__move', 'to: 5.990 3.157 63.158');
+                }
+                isBoxMoved3 = !isBoxMoved3;
+              });
+            },
+          });
+          boxEl3.setAttribute('move-box3', '');
+        </script>
+
+        <!-- Outside Decoration  -->
+        <a-entity static-body="" geometry="height: 2; width: 25.8" position="17.64475 0.58018 55.87309" rotation="" material="roughness: 1; src: image/wall.jpg"></a-entity>
+        <a-entity static-body="" geometry="height: 2; width: 2" position="30.05238 0.57437 54.37291" rotation="0 90 0" material="roughness: 1; src: image/wall.jpg"></a-entity>
+        <a-entity static-body="" geometry="height: 2; width: 2" position="5.22368 0.57437 54.37291" rotation="0 90 0" material="roughness: 1; src: image/wall.jpg"></a-entity>
+        <a-entity static-body="" geometry="height: 2; width: 24; depth: 2" position="17.64475 0.58018 54.38429" rotation="" material="roughness: 1; src: image/soil.jpg"></a-entity>
+        <a-entity static-body="" geometry="depth: 60; height: 0.1; width: 30" position="-1.58023 -0.45467 32.33495" material="shader: flat; side: double; src: image/wood.jpg; repeat: 4 4" rotation="0.000 65.290 0.000" scale="1 1 0.822"></a-entity>
+        <a-entity static-body="" geometry="depth: 60; height: 0.1; width: 30" position="-7.82832 -0.45467 -27.22015" material="shader: flat; side: double; src: image/wood.jpg; repeat: 4 4" rotation="0 90 0" scale="0.98996 -1.98512 0.74434"></a-entity>
+
+        <a-entity id="fl1" gltf-model="/assets/flowers/scene.gltf" position="7.51566 1.84525 54.59708" scale="0.05 0.05 0.05" rotation="0 -171.44444216361083 0"></a-entity>
+        <a-entity id="fl2" gltf-model="/assets/flowers/scene.gltf" position="10.61319 1.84525 54.59708" scale="0.05 0.05 0.05" rotation="0 -171.44444216361083 0"></a-entity>
+        <a-entity id="fl3" gltf-model="/assets/flowers/scene.gltf" position="15.60013 1.84525 54.59708" scale="0.05 0.05 0.05" rotation="0 -171.44444216361083 0"></a-entity>
+        <a-entity id="fl4" gltf-model="/assets/flowers/scene.gltf" position="19.38511 1.84525 54.59708" scale="0.05 0.05 0.05" rotation="0 -171.44444216361083 0"></a-entity>
+        <a-entity id="fl5" gltf-model="/assets/flowers/scene.gltf" position="25.25264 1.84525 54.59708" scale="0.05 0.05 0.05" rotation="0 -171.44444216361083 0"></a-entity>
+
+
+        <!-- Columns -->
+        <a-cylinder position="-41.00537 3.26348 -56.02593" radius="1.4" height="5" material="src: ./image/gold.jpg" geometry="radius: 0.4; height: 75" scale="3.999 0.101 3.93"></a-cylinder>
+        <a-cylinder position="-41.005 3.26348 33.81447" radius="1.4" height="5" material="src: ./image/gold.jpg" geometry="radius: 0.4; height: 75" scale="3.999 0.101 3.93"></a-cylinder>
+        <a-cylinder position="38.21528 3.26348 62.99659" radius="1.4" height="5" material="src: ./image/gold.jpg" geometry="radius: 0.4; height: 75" scale="3.999 0.101 3.93"></a-cylinder>
+        <a-cylinder position="38.78706 3.26348 -56.23084" radius="1.4" height="5" material="src: ./image/gold.jpg" geometry="radius: 0.4; height: 75" scale="3.999 0.101 3.93"></a-cylinder>
+        <a-cylinder position="-103.38775 3.26348 -56.02593" radius="1.4" height="5" material="src: ./image/gold.jpg" geometry="radius: 0.4; height: 75" scale="3.999 0.101 3.93"></a-cylinder>
+        <a-cylinder position="-103.38775 3.26348 33.69969" radius="1.4" height="5" material="src: ./image/gold.jpg" geometry="radius: 0.4; height: 75" scale="3.999 0.101 3.93"></a-cylinder>
+
+        <!-- Pool -->
+        <a-cylinder position="0.98676 0.53158 -32.96171" radius="2.7" height="5" material="src: ./vid/pool.mp4; opacity: 0.6" autoplay="TRUE" loop="true" geometry="primitive: box; height: 15; depth: 4; width: 3" scale="8.64386 0.101 3.97796"></a-cylinder>
+        <a-cylinder position="1.20893 -0.37756 -33.07987" radius="3" height="5" material="src: ./image/wall.jpg; opacity: 0.9" geometry="primitive: box; height: 2; depth: 4; width: 4" scale="6.58439 0.101 3.93"></a-cylinder>
+        <a-entity static-body="" geometry="height: 3; width: 10" position="1.09454 0.72411 -41.44675" rotation="" material="roughness: 1; side: double; src: image/wall.jpg" scale="2.67954 0.78142 1"></a-entity>
+        <a-entity static-body="" geometry="height: 3; width: 7" position="14.29238 0.72411 -33.42038" rotation="0 90 0" material="roughness: 1; side: double; src: image/wall.jpg" scale="2.45072 0.78142 1"></a-entity>
+        <a-entity static-body="" geometry="height: 3; width: 7" position="-11.80662 0.72411 -33.37904" rotation="0 90 0" material="roughness: 1; side: double; src: image/wall.jpg" scale="2.45072 0.78142 1"></a-entity>
+
+        <!-- Hut -->
+        <a-cylinder position="20.342 -0.36231 -47.682" radius="1.4" height="5" material="src: ./image/wood.jpg" geometry="height: 1" scale="3.999 0.101 3.93"></a-cylinder>
+        <a-entity id="um1" gltf-model="/assets/beach_umbrella/scene.gltf" position="20.4586 -4.88812 -47.77474" scale="0.05 0.05 0.05" rotation="0 -171.44444216361083 0"></a-entity>
+        
+
+        <!--Beach chair-->
+        <a-entity gltf-model="/assets/beach_chair/scene.gltf" position="9.99019 -2.26849 -43.02185" scale="25 25 25" rotation="0 -171.44444216361083 0"></a-entity>
+        <a-entity gltf-model="/assets/beach_chair/scene.gltf" position="7.22135 -2.26849 -50.41009" scale="25 25 25" rotation="0 -171.44444216361083 0"></a-entity>
+
+
+        <!-- Pitch -->
+        <a-entity gltf-model="/assets/pitch/scene.gltf" position="-36.77844 -0.01 -9.18272" scale="2 2.69285 1.5" rotation=""></a-entity>
+        <a-entity gltf-model="/assets/captain_tsubasa/scene.gltf" position="-73.51064 4.23907 -36.30376" scale="1.5 1.5 1.5" rotation=""></a-entity>
+        
+        <!-- Football -->
+          <a-sphere id="ball" position="-74.31557 0.69546 -10.12838" radius="0.70" src="./image/ball.jpg" animation__move="property:  position;  to:  -74.316 0.695 -38.117;  easing:  easeInOutQuad;  startEvents:  ;  pauseEvents:  ;  resumeEvents:  " move-ball="" material="" geometry="" raycaster="objects: a-sphere" rotation="0 90 0"></a-sphere>
+          <script>
+          var ballEl = document.getElementById('ball');
+          var cameraEl = document.querySelector('[camera]');
+          // Toggle the state
+          var isBallMoved = false;
+          AFRAME.registerComponent('move-ball', {
+            init: function () {
+              var data = this.data;
+              var el = this.el;
+      
+              el.addEventListener('raycaster-intersected', function () {
+                if (!isBallMoved) {
+                  // Move the ball to a new position
+                  el.setAttribute('animation__move', 'to: -74.316 0.695 -38.117');
+                  isBallMoved = true;
+                  }
+                });
+      
+              el.addEventListener('raycaster-intersected-cleared', function () {
+                if (isBallMoved) {
+                  // Move the ball back to its original position
+                  el.setAttribute('animation__move', 'to: -74.31557 0.69546 -10.12838');
+                  isBallMoved = false;
+                  }
+                });
+              },
+            });
+      
+          // Attach the component to the ball
+          ballEl.setAttribute('move-ball', '');
+          </script>
+
+        <!-- PS5 -->
+        <a-entity gltf-model="/assets/ps5_controller/scene.gltf" position="-28.06311 2.22971 19.75503" scale="0.01 0.01 0.01" rotation="-54.752419860496595 90.00021045914971 0"></a-entity>
+        <a-entity gltf-model="/assets/ps5_controller/scene.gltf" position="-28.06311 2.22971 26.00241" scale="0.01 0.01 0.01" rotation="-54.752419860496595 90.00021045914971 0"></a-entity>
+       
+
+        <!-- Vending machine -->
+        <a-entity id="Vending machine" gltf-model="/assets/vending_machine/scene.gltf" position="0.00096 13.73945 32.56757" scale="3 3 3" rotation="0 90 0"></a-entity>
+
+        <!--Bar-->
+        <a-entity id="bar" gltf-model="/assets/bar/scene.gltf" position="27.74381 13.80761 -14.13686" scale="1.7 1.7 1.7" rotation="0 180 0"></a-entity>
+        <a-entity id="disco" gltf-model="/assets/disco_ball/scene.gltf" position="13.18814 23.9247 -10.75305" scale="2 2 2" rotation="0 181.4160000000894 0" animation="property: rotation; dur: 1500; from: 0 0 0; to: 0 360 0; easing: linear; loop: true"></a-entity>
+        <a-entity id="Stool2" gltf-model="/assets/stool/scene.gltf" position="24.56078 13.70765 -13.26087" scale="0.04 0.035 0.04" rotation="0 90 0"></a-entity>
+        <a-entity id="Stool3" gltf-model="/assets/stool/scene.gltf" position="20.78649 13.70765 -13.26087" scale="0.04 0.035 0.04" rotation="0 90 0"></a-entity>
+        <a-entity id="Stool4" gltf-model="/assets/stool/scene.gltf" position="16.0858 13.70765 -13.26087" scale="0.04 0.035 0.04" rotation="0 90 0"></a-entity>
+        <a-entity id="wine-1" gltf-model="/assets/wine_bottle/scene.gltf" position="23.84408 17.26026 -16.13775" scale="0.2 0.17 0.2" rotation=""></a-entity>
+        <a-entity id="wine-2" gltf-model="/assets/wine_bottle/scene.gltf" position="21.35087 17.26026 -16.13775" scale="0.2 0.17 0.2" rotation=""></a-entity>
+        <a-entity id="wine-3" gltf-model="/assets/wine_bottle/scene.gltf" position="16.97808 17.26026 -16.13775" scale="0.2 0.17 0.2" rotation=""></a-entity>
+        
+        <!--Billard-->
+        <a-entity gltf-model="/assets/billard/scene.gltf" position="-6.66626 16.49096 -8.9245" scale="0.04 0.04 0.04" rotation=""></a-entity>
+          
+       
+
+        <!-- PC -->
+        <a-entity id="PC" gltf-model="/assets/PC/scene.gltf" position="27.44898 3.18752 12.08286" scale="0.5 0.5 0.5" rotation="0 180 0"></a-entity>
+        <a-entity id="GChair" gltf-model="/assets/gaming_chair/scene.gltf" position="23.65326 -0.14984 11.14054" scale="5 5 5" rotation="0 90 0"></a-entity>
+        <a-video src="./vid/cs.mp4" position="28.11853 4.67673 10.57111" loop="true" muted="true" width="2.5" height="1.47154" scale="0.49339 0.589 1.07841" toggle-tv="" material="" geometry="width: 6.6; height: 3" rotation="-4.181 270 0"></a-video>
+
+        <!--Piano-->
+        <a-entity id="piano" position="4.87769 -0.15942 19.28553" rotation="0 -90 0" onclick="playPiano()">
+          <a-text id="pianoText" value="Play piano" align="center" color="#FFF" position="0 3 3" scale="1.5 1.5 1.5" text="" visible="true"></a-text>
+          <a-entity gltf-model="/assets/piano/scene.gltf" scale="4 4 4" rotation="0 90 0"></a-entity>
+        </a-entity>
+
+        <!-- Bedroom -->
+        <a-entity id="Bed" gltf-model="/assets/bed/scene.gltf" position="23.44539 -0.34276 -11.27775" scale="0.05 0.05 0.05" rotation="0 -90 0"></a-entity>
+        <a-entity id="Make up table" gltf-model="/assets/mtable/scene.gltf" position="28.25387 2.46944 -19.77179" scale="4 4 3" rotation=""></a-entity>
+        <a-cylinder position="26.20607 0.72533 -19.60694" radius="0.1" height="80" material="src: ./image/wood.jpg" geometry="radius: 0.2; height: 20" scale="3.999 0.101 3.93"></a-cylinder>
+        <a-entity static-body="" geometry="depth: 0.1; height: 4; width: 3" position="28.95993 5.00457 -19.76215" rotation="0 90 0" material="roughness: 1; side: double; src: ./image/glass.jpg; opacity: 0.5"></a-entity>
+        <a-entity gltf-model="/assets/wardrobe/scene.gltf" position="24.80847 -0.34609 0.39496" scale="0.005 0.005 0.005" rotation="0 180 0"></a-entity>
+        
+        <a-entity gltf-model="/assets/tv_cabinet/scene.gltf" position="7.05037 -0.30495 -13.03933" scale="" rotation="0 90 0"></a-entity>
+        <a-entity static-body="" geometry="height: 6; width: 14" position="5.63968 6.96218 -13.13028" rotation="0 90 0" material="roughness: 1; side: double; src: ./image/none.jpg"></a-entity>
+        <a-box id="tvScreen1" position="6.16745 7.00787 -13.1297" rotation="0 90 0" height="7" width="12" depth="0.1" color="black" material="color: white; side: double; src: vid/toothless.mp4; shader: flat" geometry="height: 5.6; width: 13.4"></a-box>
+
+
+        <!--Plants-->
+        <a-entity gltf-model="/assets/plant/scene.gltf" position="7.20218 -0.30512 -22.41333" scale="" rotation=""></a-entity>
+        <a-entity gltf-model="/assets/plant/scene.gltf" position="-14.6011 -0.30855 -22.51043" scale="" rotation=""></a-entity>
+   
+        <a-entity gltf-model="/assets/plant/scene.gltf" position="27.68446 13.72726 6.93921" scale="" rotation=""></a-entity>
+        <a-entity gltf-model="/assets/plant/scene.gltf" position="27.27099 13.72726 2.15357" scale="" rotation=""></a-entity>
+
+
+        <!--Palm-->
+        <a-entity gltf-model="/assets/palm/scene.gltf" position="35.28472 -0.30512 56.61126" scale="0.05 0.05 0.05" rotation="0 -79.16557855322584 0"></a-entity>
+        <a-entity gltf-model="/assets/palm/scene.gltf" position="-35.65306 -0.30512 -52.60595" scale="0.05 0.05 0.05" rotation=""></a-entity>
+        <a-entity gltf-model="/assets/palm/scene.gltf" position="21.11313 -0.30512 -34.95205" scale="0.05 0.05 0.05" rotation="0 91.24467479017386 0"></a-entity>
+       
+
+        <!-- Kitchen -->
+        <a-entity id="Kitchen" gltf-model="/assets/kitchen/scene.gltf" position="-26.58052 -0.41809 6.60333" scale="0.045 0.05 0.05" rotation="0 90 0"></a-entity>
+        <a-entity id="Fridge" gltf-model="/assets/fridge/scene.gltf" position="-28.36028 0.87327 -11.0322" scale="4 4 4" rotation="0 90 0"></a-entity>
+        <a-entity id="Ktable" gltf-model="/assets/kitchen_table/scene.gltf" position="-5.54136 -0.85636 -12.13294" scale="0.22 0.22 0.22" rotation="0 90 0"></a-entity>
+
+        <a-entity id="Chair 1" gltf-model="/assets/kitchen_chair/scene.gltf" position="-17.70704 1.87681 -4.17967" scale="4 4 4" rotation="0 -90 0"></a-entity>
+        <a-entity id="Chair 2" gltf-model="/assets/kitchen_chair/scene.gltf" position="-18.02652 1.85582 -0.91112" scale="4 4 4" rotation="0 -90 0"></a-entity>
+
+        <!--Bathroom-->
+        <a-entity static-body="" geometry="depth: 9; height: 3; width: 0.1" position="-7.97491 0.959 -18.82338" material="shader: flat; side: double; src: image/cement.jpg" scale="1 1 0.822"></a-entity>
+        <a-entity static-body="" geometry="depth: 2; height: 4; width: 4" position="-9.97151 1.63405 -23.35369" material="shader: flat; side: double; src: image/cement.jpg" scale="1 1 0.822"></a-entity>
+        <a-entity static-body="" geometry="depth: 9; height: 3; width: 0.1" position="-11.94883 0.959 -18.82338" material="shader: flat; side: double; src: image/cement.jpg" scale="1 1 0.822"></a-entity>
+        <a-entity static-body="" geometry="depth: 5; height: 3; width: 0.1" position="-9.97183 0.959 -15.13564" material="shader: flat; side: double; src: image/cement.jpg" scale="1 1 0.822" rotation="0 90 0"></a-entity>
+        <a-entity static-body="" geometry="depth: 9; height: 4; width: 0.1" position="-10.05496 -0.04827 -18.82338" material="shader: flat; side: double; src: image/cement.jpg" scale="1 1 0.822" rotation="0 0 90"></a-entity>
+        <a-entity static-body="" geometry="height: 0.1; width: 0.3" position="-9.97151 3.45223 -22.50454" material="shader: flat; side: double; src: image/metal.jpg" scale="1 1 0.822"></a-entity>
+      
+        <a-entity id="sink" gltf-model="/assets/sink/scene.gltf" position="3.00665 2.33712 -23.64853" scale="3 3 3" rotation="0 180 0"></a-entity>
+        <a-entity id="toilet" gltf-model="/assets/toilet/scene.gltf" position="-4.88116 -0.343 -22.631" scale="4 4 4" rotation=""></a-entity>
+        <a-entity id="WM" gltf-model="/assets/washing_machine/scene.gltf" position="-0.69106 -0.343 -22.631" scale="0.005 0.004 0.003" rotation=""></a-entity>
+      
+        <a-box id="Water 1" position="-9.97483 1.00515 -18.86312" rotation="90 90 0" height="7" width="12" depth="0.1" color="black" material="color: white; side: double; src: vid/pool.mp4; shader: flat; opacity: 0.5" geometry="height: 4; width: 7.4; depth: 2"></a-box>
+        <a-box id="Water 2" position="3.00919 2.62369 -23.53967" rotation="90 0 0" height="7" width="12" depth="0.1" color="black" material="color: white; side: double; src: vid/pool.mp4; shader: flat; opacity: 0.5" geometry="height: 1.2; width: 1.8"></a-box>
+        
+        <!-- Bathroom door -->
+         <a-box id="myBox2" src="./image/glass.jpg" animation__move="property: position; to: 1.895 4.553 -14.987; easing: easeInOutQuad; dur: 3000" move-box2 material="opacity: 0.5" geometry="height: 2" scale="0.227 5.004 6.024" rotation="0 90 0"></a-box>
+         <script>
+           var boxEl2 = document.getElementById('myBox2');
+         
+           boxEl2.addEventListener('click', function () {
+             boxEl2.emit('moveBox2'); // Use the correct event name moveBox1
+           });
+         
+           // Toggle the state
+           var isBoxMoved2 = false;
+         
+           AFRAME.registerComponent('move-box2', {
+             init: function () {
+               var el2 = this.el;
+         
+               el2.addEventListener('moveBox2', function () {
+                 if (isBoxMoved2) {
+                   el2.setAttribute('animation__move', 'to: 1.895 4.553 -14.987');
+                 } else {
+                   el2.setAttribute('animation__move', 'to: -4.008 4.553 -14.987');
+                 }
+                 isBoxMoved2 = !isBoxMoved2;
+               });
+             },
+           });
+           boxEl2.setAttribute('move-box2', '');
+         </script>
+
+        
+
+
+    <!-- Living room -->
+        <a-entity gltf-model="/assets/Couch/scene.gltf" position="-3.01748 -0.30495 22.57687" scale="3.5 4.5 3" rotation="0 -90 0"></a-entity>
+        <a-entity gltf-model="/assets/ltable/scene.gltf" position="-7.70236 -0.30495 22.44675" scale="35 23 30" rotation="0 -90 0"></a-entity>
+        <a-entity gltf-model="/assets/tv_cabinet/scene.gltf" position="-28.15415 -0.30495 22.91972" scale="" rotation="0 90 0"></a-entity>
+        <a-entity static-body="" geometry="height: 2; width: 10; depth: 2" position="3.84938 0.696 29.2373" rotation="0 90 0" material="roughness: 1; side: double; src: image/royal.jpg" scale=""></a-entity>
+        <a-entity static-body="" geometry="height: 4; width: 10; depth: 2" position="3.84938 3.69699 29.2373" rotation="0 90 0" material="roughness: 1; side: double; src: vid/fishtank.mp4; opacity: 0.8" muted="true" autoplay loop="TRUE" ></a-entity>
+
+        <!-- Flat Screen TV -->
+        <a-entity position="-24.7 1 -10">
+          <a-box position="-4.45057 6.35017 33.02661" height="8" width="0.3" depth="13" color="#292929" material="" geometry=""></a-box>
+          <a-box id="tvScreen" onclick="tvClick()" position="-4.2937 6.35903 33.04284" rotation="0 90 0" height="7" width="12" depth="0.1" color="black" material="side: double; src: vid/bigbang.mp4; shader: flat" geometry=""></a-box>
+          <a-text id="tvText" value="Turn on TV" align="center" color="#FFF" position="-4.1735 4.73627 33.05106" scale="3 3 3" rotation="0 90 0" text="" visible=""></a-text>
+          </a-entity>
+       
+        <!--Ceiling Fan-->
+        <a-entity id="fan" gltf-model="assets/fan/scene.gltf" position="-2.89181 12.25908 22.79061" rotation="0 360 0" scale="5 3 5" animation="property: rotation; dur: 1500; from: 0 0 0; to: 0 360 0; easing: linear; loop: true"></a-entity>
+        
+        <!-- Furnace -->
+        <a-entity static-body="" geometry="height: 7.8; width: 6" position="-16.66114 9.68061 8.25661" rotation="" material="roughness: 1; side: double; src: image/wall.jpg" scale=""></a-entity>
+        <a-entity static-body="" geometry="height: 6; width: 6; depth: 2" position="-16.66114 2.74904 8.8831" rotation="" material="roughness: 1; side: double; src: image/brick.jpg" scale=""></a-entity>
+
+        <a-entity id="Furnace" position="-17.74117 0.9571 11.11305" rotation="0 90 0">
+          <a-box id="fnScreen" onclick="fnClick()" position="1.26047 0.7853 1.14779" rotation="0 90 0" height="7" width="12" depth="0.1" color="black" material="side: double; src: vid/fire.mp4; shader: flat; opacity: 0.9" geometry="height: 4; width: 4"></a-box>
+          <a-text id="fnText" value="Set fire up" align="center" color="#FFF" position="1.03106 0.5714 1.19674" scale="3 3 3" rotation="0 -90 0" text="" visible=""></a-text>
+          </a-entity>
+      <!-- Logo -->
+      <a-entity gltf-model="/assets/logo/scene.gltf" position="-1.63651 6.49716 35.32031" scale="2 2 2" rotation=""></a-entity>
+    <!--Garage-->
+    <a-entity id="Car" gltf-model="assets/car2.glb" position="15.28321 0.4077 44.92191" scale="0.03 0.03 0.03" rotation="0 90 0"></a-entity>
+    <script>
+      AFRAME.registerComponent('garagedoor', {
+        init: function () {
+          var isOpen = false;
+          var initialRotation = this.el.getAttribute('rotation');
+          var targetRotation = isOpen ? '0 0 -90' : initialRotation;
+          
+          this.el.addEventListener('click', () => {
+            isOpen = !isOpen;
+            targetRotation = isOpen ? '0 0 -90' : initialRotation;
+            this.el.setAttribute('animation', 'property: rotation; to: ' + targetRotation + '; dur: 1000');
+          });
+        }
+      });
+    </script>
+    
+    <a-entity id="door_rotation_90" position="7.8046 6.45606 43.84422" rotation="" garagedoor="" animation="property: rotation; to: [object Object]" scale="1 1 0.95711">
+      <a-entity id="garagedoor" static-body="" geometry="height: 10; width: 17.7; depth: 0.5" position="-2.80844 -1.92047 -0.00062" rotation="0 -90 0" class="intersectable" material="roughness: 1; src: image/garagedoor.jpg"></a-entity>
+    </a-entity>
+    
+    <!-- Main Door -->
+    
+      <script>
+        AFRAME.registerComponent('1door', {
+          init: function () {
+            var isOpen = false;
+            var initialRotation = this.el.getAttribute('rotation');
+            var targetRotation = isOpen ? '0 90 0' : initialRotation;
+            
+            this.el.addEventListener('click', () => {
+              isOpen = !isOpen;
+              targetRotation = isOpen ? '0 90 0' : initialRotation;
+              this.el.setAttribute('animation', 'property: rotation; to: ' + targetRotation + '; dur: 1000');
+            });
+          }
+        });
+      </script>
+      
+      <a-entity id="door_rotation_90y" position="-9.812 -0.230 35.100" rotation="" 1door="" animation="property: rotation; to: [object Object]" scale="1 1 1">
+        <a-entity id="1door" static-body="" gltf-model="/assets/door/scene.gltf" position="-2.300 -0.080 -0.024" rotation="0 90 0" class="intersectable" scale="5.000 3.905 4.360" ></a-entity>
+      </a-entity>
+
+
+    <script>
+      AFRAME.registerComponent('door', {
+        init: function () {
+          var isOpen = false;
+          var initialRotation = this.el.getAttribute('rotation');
+          var targetRotation = isOpen ? '0 -90 0' : initialRotation;
+          
+          this.el.addEventListener('click', () => {
+            isOpen = !isOpen;
+            targetRotation = isOpen ? '0 -90 0' : initialRotation;
+            this.el.setAttribute('animation', 'property: rotation; to: ' + targetRotation + '; dur: 1000');
+          });
+        }
+      });
+    </script>
+    
+      <a-entity id="door rotation 1" position="-19.935 -0.230 34.795" rotation="0 0 0" door="" animation="property: rotation; to: 0 0 0" scale="1 1 1">
+      <a-entity id = "door 1 " gltf-model="/assets/door/scene.gltf" position="2.347 -0.078 0.544" rotation="0 -90 0" id="door" class="intersectable" scale="5.000 3.905 4.360">
+      </a-entity>
+      </a-entity>
+
+      <a-entity id="door rotation 2" position="-20.90606 -0.38648 -23.7646" rotation="" door="" animation="property: rotation; to: [object Object]" scale="">
+      <a-entity id="door 2" gltf-model="/assets/door/scene.gltf" position="0.14758 0.08584 2.1543" rotation="0 180 0" class="intersectable" scale="5 3.905 4.36">
+      </a-entity>
+      </a-entity>
+
+      <a-entity id="door rotation 3" position="24.29224 -0.23 35.2395" rotation="" door="" animation="property: rotation; to: [object Object]" scale="">
+        <a-entity id="door 3" gltf-model="/assets/door/scene.gltf" position="2.38141 -0.0318 0.1904" rotation="0 -90 0" class="intersectable" scale="5 3.905 4.44467">
+        </a-entity>
+        </a-entity>
+
+      <a-entity id="door rotation 4" position="5.41501 -0.31179 0.89346" rotation="0 -90 0" door="" animation="property: rotation; to: 0 -90 0" scale="">
+        <a-entity id="door 4" gltf-model="/assets/door/scene.gltf" position="2.94722 -0.01926 0.52165" rotation="0 -90 0" class="intersectable" scale="5 3.905 4.65451">
+        </a-entity>
+        </a-entity>
+
+      <a-entity id="door rotation 5" position="14.45712 -0.21927 8.06568" rotation="0 -90 0" door="" animation="property: rotation; to: 0 -90 0" scale="">
+        <a-entity id="door 5" gltf-model="/assets/door/scene.gltf" position="3.29098 -0.01926 0.11369" rotation="0 -90 0" class="intersectable" scale="5 3.905 5.5607">
+        </a-entity>
+        </a-entity>
+
+  
+     <!-- Record player -->
+    <a-entity id="recorder" position="27.39049 16.78842 -16.39337" rotation="0 -90 0" onclick="playRecord()">
+        <a-text id="recordText" value="Play recorder" align="center" color="#FFF" position="1.35074 0.50438 0.20191" scale="1.5 1.5 1.5" text="" visible="true" rotation="0 90 0"></a-text>
+        <a-entity gltf-model="/assets/record/scene.gltf" scale="50 50 50" rotation="0 90 0"></a-entity>
+      </a-entity>
+
+    <!-- Helicopter -->
+    <a-entity static-body="" geometry="depth: 20; height: 4; width: 20" position="-17.78156 15.58101 -5.90147" material="shader: flat; side: double; src: image/cement.jpg" scale="1.25537 1 0.91521"></a-entity>    <a-entity static-body="" geometry="depth: 15; height: 0.1; width: 10" position="-17.78156 17.56685 -5.24417" material="shader: flat; side: double; src: image/spot.jpg" scale="1.25537 1 0.91521"></a-entity>
+    <a-entity static-body="" geometry="depth: 2; height: 2.5; width: 6" position="-17.82412 14.97618 4.00896" material="shader: flat; side: double; src: image/cement.jpg" scale="1 1 0.82237"></a-entity>
+    <a-entity static-body="" geometry="depth: 2; height: 1.5; width: 6" position="-17.84481 14.4879 5.37706" material="shader: flat; side: double; src: image/cement.jpg" scale="1 1 0.82237"></a-entity>
+    <a-entity id="Helicopter" gltf-model="/assets/helicopter_v2/scene.gltf" position="-17.79494 20.40148 -6.51624" scale="2 2 2" rotation="0 180 0"></a-entity>
+  
+  
+    <!-- Dog -->
+    <a-entity id="Dog" gltf-model="/assets/dog/scene.gltf" position="-32.28212 0.26543 -44.37135" scale="2 2 2" rotation=""></a-entity>
+    <a-entity gltf-model="/assets/dog_house/scene.gltf" position="-37.16237 0.04157 -44.35152" scale="" rotation=""></a-entity>
+
+    <!-- Anime girl -->
+    <a-entity id="Girl" gltf-model="/assets/anime_girl/scene.gltf" position="22.48 -0.56321 20.27498" scale="5 5 5" rotation="0 5.711243301864046 0"></a-entity>
+  
+    <!-- Trim -->
+    <a-entity id="Trim 1" static-body="" geometry="height: 0.3; width: 25; depth: 0.3" position="-17.81407 17.71882 -14.97272" rotation="" material="roughness: 1; side: double; src: image/gold.jpg" scale=""></a-entity>
+    <a-entity id="Trim 2" static-body="" geometry="height: 0.3; width: 18.5; depth: 0.3" position="-30.20453 17.71882 -5.87981" rotation="0 90 0" material="roughness: 1; side: double; src: image/gold.jpg" scale=""></a-entity>
+    <a-entity id="Trim 3" static-body="" geometry="height: 0.3; width: 18.5; depth: 0.3" position="-5.71577 17.71882 -5.87981" rotation="0 90 0" material="roughness: 1; side: double; src: image/gold.jpg" scale=""></a-entity>
+    <a-entity id="Trim 4" static-body="" geometry="height: 0.3; width: 25; depth: 0.3" position="-17.81407 17.71882 3.20014" rotation="" material="roughness: 1; side: double; src: image/gold.jpg" scale=""></a-entity>
+    
+    <a-entity id="Trim 1.1" static-body="" geometry="height: 0.25; width: 31.8; depth: 0.25" position="-30.06648 17.71882 19.2357" rotation="0 90 0" material="roughness: 1; side: double; src: image/gold.jpg" scale=""></a-entity>
+    <a-entity id="Trim 1.2" static-body="" geometry="height: 0.25; width: 25; depth: 0.25" position="-17.81407 17.66621 35.10718" rotation="" material="roughness: 1; side: double; src: image/gold.jpg" scale=""></a-entity>
+    <a-entity id="Trim 1.3" static-body="" geometry="height: 0.25; width: 25.8; depth: 0.25" position="17.63932 17.66621 53.30475" rotation="" material="roughness: 1; side: double; src: image/gold.jpg" scale=""></a-entity>
+    <a-entity id="Trim 1.4" static-body="" geometry="height: 0.25; width: 18.4; depth: 0.25" position="4.79564 17.68273 44.22671" rotation="0 90 0" material="roughness: 1; side: double; src: image/gold.jpg" scale=""></a-entity>
+    <a-entity id="Trim 1.5" static-body="" geometry="height: 0.25; width: 18.4; depth: 0.25" position="30.49794 17.68273 44.22671" rotation="0 90 0" material="roughness: 1; side: double; src: image/gold.jpg" scale=""></a-entity>
+
+  </a-scene>
+  </body>
+</html>

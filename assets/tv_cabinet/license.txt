@@ -1,0 +1,11 @@
+Model Information:
+* title:	tv cabinet
+* source:	https://sketchfab.com/3d-models/tv-cabinet-0d552143c2604dd7bc6ff5a1d330fa2b
+* author:	SamSolax (https://sketchfab.com/SamSolax)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "tv cabinet" (https://sketchfab.com/3d-models/tv-cabinet-0d552143c2604dd7bc6ff5a1d330fa2b) by SamSolax (https://sketchfab.com/SamSolax) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

@@ -1,0 +1,11 @@
+Model Information:
+* title:	Dog House
+* source:	https://sketchfab.com/3d-models/dog-house-874afb8928a04cb29561096bd80d3b12
+* author:	mauriggb (https://sketchfab.com/mauriggb)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Dog House" (https://sketchfab.com/3d-models/dog-house-874afb8928a04cb29561096bd80d3b12) by mauriggb (https://sketchfab.com/mauriggb) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

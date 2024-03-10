@@ -1,0 +1,11 @@
+Model Information:
+* title:	BAR TABLE
+* source:	https://sketchfab.com/3d-models/bar-table-48ddf9b5e1f846a48a766d7413aa2aef
+* author:	HumAi Club (https://sketchfab.com/2ndlr)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "BAR TABLE" (https://sketchfab.com/3d-models/bar-table-48ddf9b5e1f846a48a766d7413aa2aef) by HumAi Club (https://sketchfab.com/2ndlr) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
